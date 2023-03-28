@@ -45,6 +45,7 @@
 #include <Qt>                   // for UTC, SkipEmptyParts
 #include <QtGlobal>             // for foreach, qPrintable
 #include <QStringRef>           // for substring
+#include <qDebug>           // for substring
 
 #include "defs.h"
 #include "gbfile.h"             // for gbfprintf, gbfclose, gbfopen, gbfputs, gbfgetstr, gbfile
@@ -444,13 +445,14 @@ void IgcFormat::read()
          bytes is 4 digits followed by three letters, specifying start end end
          bytes of each extension, and the kind of extension (always three chars)
       */
-    
+
         // QString ibuf_q = QString::fromLocal8Bit(ibuf);
         // QStringList ext_data = ibuf_q.split(QRegularExpression ("[A-Z]+"));
-
-      for (unsigned i = 3; i< strlen(ibuf); i+=7){
+#if 0
+      for (unsigned i = 3; i< strlen(ibuf); i+=7) {
         s = ibuf;
         s2 = s.substr(i, 7);
+qDebug() << i << s2.c_str();
         sscanf(s2.c_str(), "%2i%2i%3s", &begin, &end, ext_record_type);
         switch (hash2stringint(ext_record_type)) {
           case hash2stringint("ENL"):
@@ -498,7 +500,31 @@ void IgcFormat::read()
           default:
             break;
         }
+     }
+#else
+      {
+      QString istring{ibuf};
+      // The zeroth byte is the 'I'.
+      int buf_start = 3;
+      int ntags = istring.mid(1, 2).toInt();
+qDebug() << istring <<  " "<<  ntags << " " << istring.size();
+
+      assert(istring.size() == ntags * 7 + 3);
+
+      for (int ntag = 0; ntag < ntags; ntag++, buf_start += 7) {
+        int start = istring.mid(buf_start,  2).toInt();
+        int end = istring.mid(buf_start + 2, 2).toInt();
+        QString tag = istring.mid(buf_start + 4, 3);
+qDebug() << ntags <<  " " << start << " " << end << " " << tag;
+       if (tag == "ENL") {
+            igc_fs_flags.has_exts = igc_fs_flags.has_exts || true;
+            igc_fs_flags.enl = true;
+            igc_fs_flags.enl_start = start;
+            igc_fs_flags.enl_end = end;
       }
+      }
+      }
+#endif
 
       // These record types are discarded
     case rec_diff_gps:
