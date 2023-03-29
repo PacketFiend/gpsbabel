@@ -177,6 +177,12 @@ private:
    * which will be defined in the IGC file's I record,
    * and present in individual B records.
   */
+struct igc_fs_flag {
+  short start;
+  short end;
+  int value;
+};
+
 struct igc_fs_flags_t {
   igc_fs_flags_t() :
   has_exts(0),
@@ -226,6 +232,7 @@ struct igc_fs_flags_t {
   short gsp_end;
   short fxa_start;
   short fxa_end;
+  // std::optional<igc_fs_flag> enl;
 };
 
 struct igc_fsdata : public FormatSpecificData {
@@ -243,7 +250,6 @@ struct igc_fsdata : public FormatSpecificData {
   int trt{0}; // True Track
   int gsp{0}; // Ground Speed
   int fxa{0}; // Fix Accuracy
-  igc_fs_flags_t igc_fs_flags;
 
 };
 

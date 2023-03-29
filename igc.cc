@@ -45,9 +45,13 @@
 #include <Qt>                   // for UTC, SkipEmptyParts
 #include <QtGlobal>             // for foreach, qPrintable
 #include <QStringRef>           // for substring
+<<<<<<< HEAD
 #include <QStringView>          // for QStringView
 #include <QDebug>               // DELETEME for debugging
 #include <QRegularExpression>   // for QRegularExpression
+=======
+#include <qDebug>           // for substring
+>>>>>>> d428b7b95a2ed2432668da08ff7f6fbefcf2f216
 
 #include "defs.h"
 #include "gbfile.h"             // for gbfprintf, gbfclose, gbfopen, gbfputs, gbfgetstr, gbfile
@@ -456,6 +460,7 @@ void IgcFormat::read()
          bytes of each extension, and the kind of extension (always three chars)
       */
 
+<<<<<<< HEAD
       /*
        * First, construct a hash of all available extensions.
        * It may be better to construct the map and parse the record at the same time.
@@ -494,6 +499,18 @@ void IgcFormat::read()
         QStringView ext_record_type = QStringView(i.key().mid(4,3)).toString();
         switch (ext_types_hash.value(i.key())) {
           case ext_rec_enl:
+=======
+        // QString ibuf_q = QString::fromLocal8Bit(ibuf);
+        // QStringList ext_data = ibuf_q.split(QRegularExpression ("[A-Z]+"));
+#if 0
+      for (unsigned i = 3; i< strlen(ibuf); i+=7) {
+        s = ibuf;
+        s2 = s.substr(i, 7);
+qDebug() << i << s2.c_str();
+        sscanf(s2.c_str(), "%2i%2i%3s", &begin, &end, ext_record_type);
+        switch (hash2stringint(ext_record_type)) {
+          case hash2stringint("ENL"):
+>>>>>>> d428b7b95a2ed2432668da08ff7f6fbefcf2f216
             igc_fs_flags.has_exts = igc_fs_flags.has_exts || true;
             igc_fs_flags.enl = true;
             igc_fs_flags.enl_start = begin;
@@ -539,8 +556,36 @@ void IgcFormat::read()
             break;
 
         }
+     }
+#else
+      {
+      QString istring{ibuf};
+      // The zeroth byte is the 'I'.
+      int buf_start = 3;
+      int ntags = istring.mid(1, 2).toInt();
+qDebug() << istring <<  " "<<  ntags << " " << istring.size();
+
+      assert(istring.size() == ntags * 7 + 3);
+
+      for (int ntag = 0; ntag < ntags; ntag++, buf_start += 7) {
+        int start = istring.mid(buf_start,  2).toInt();
+        int end = istring.mid(buf_start + 2, 2).toInt();
+        QString tag = istring.mid(buf_start + 4, 3);
+qDebug() << ntags <<  " " << start << " " << end << " " << tag;
+       if (tag == "ENL") {
+            igc_fs_flags.has_exts = igc_fs_flags.has_exts || true;
+            igc_fs_flags.enl = true;
+            igc_fs_flags.enl_start = start;
+            igc_fs_flags.enl_end = end;
       }
+      }
+<<<<<<< HEAD
     }
+=======
+      }
+#endif
+
+>>>>>>> d428b7b95a2ed2432668da08ff7f6fbefcf2f216
       // These record types are discarded
     case rec_diff_gps:
     case rec_event:
