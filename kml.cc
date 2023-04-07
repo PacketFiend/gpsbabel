@@ -1780,7 +1780,7 @@ void KmlFormat::kml_mt_hdr(const route_head* header)
 #endif
 #ifdef INCLUDE_IGC_TRT
       if (has_igc_trt) {
-        kml_mt_simple_array(header, kmt_igc_trt, fld_igc_trt);
+        kml_mt_simple_array(header, kmt_igc_trt, igc_trt);
       }
 #endif
     }
