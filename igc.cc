@@ -33,6 +33,7 @@
 #include <iterator>             // for reverse_iterator, operator==, prev, next
 #include <optional>             // for optional
 #include <tuple>                // for std::make_tuple
+#include <tuple>                // for std::make_tuple
 
 #include <QByteArray>           // for QByteArray
 #include <QChar>                // for QChar
@@ -46,7 +47,6 @@
 #include <Qt>                   // for UTC, SkipEmptyParts
 #include <QtGlobal>             // for foreach, qPrintable
 #include <QDebug>               // DELETEME for debugging
-#include <QRegularExpression>   // for QRegularExpression
 
 #include "defs.h"
 #include "gbfile.h"             // for gbfprintf, gbfclose, gbfopen, gbfputs, gbfgetstr, gbfile
