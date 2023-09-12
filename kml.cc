@@ -1864,8 +1864,7 @@ void KmlFormat::kml_mt_array_schema(const char* field_name, const char* display_
 
 void KmlFormat::write()
 {
-  const igc_fsdata* fs_igc = nullptr;
-  auto kml_find_usages = [this, &fs_igc](const route_head* rte)->void {
+  auto kml_find_usages = [this](const route_head* rte)->void {
     KmlFormat::kml_mt_find_igc_usage(rte);
   };
 
