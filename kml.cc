@@ -1864,6 +1864,13 @@ void KmlFormat::kml_mt_array_schema(const char* field_name, const char* display_
 
 void KmlFormat::write()
 {
+  const igc_fsdata* fs_igc = nullptr;
+  auto kml_find_usages = [this, &fs_igc](const route_head* rte)->void {
+    KmlFormat::kml_mt_find_igc_usage(rte);
+  };
+
+  track_disp_all(kml_find_usages, nullptr, nullptr);
+
   const global_trait* traits = get_traits();
 
   // Parse options
@@ -2137,4 +2144,60 @@ void KmlFormat::wr_position(Waypoint* wpt)
   }
 
   wr_deinit();
+}
+
+void KmlFormat::kml_mt_find_igc_usage(const route_head* rte) {
+  bool has_igc_exts = false;
+  bool has_igc_enl = false;
+  bool has_igc_tas = false;
+  bool has_igc_oat = false;
+  bool has_igc_vat = false;
+  bool has_igc_gsp = false;
+  bool has_igc_fxa = false;
+  bool has_igc_gfo = false;
+  bool has_igc_acz = false;
+  bool has_igc_siu = false; // Not very useful to graph
+  bool has_igc_trt = false; // Not very useful to graph
+
+  //const auto* fs_igc = reinterpret_cast<igc_fsdata*>(p->fs.FsChainFind(kFsIGC));
+  const auto* fs_igc = reinterpret_cast<igc_fsdata*>(rte->fs.FsChainFind(kFsIGC));
+
+  if (fs_igc) {
+    has_igc_exts = true;
+    if (fs_igc->enl.has_value()) {
+      has_igc_enl = true;
+    }
+    if (fs_igc->tas.has_value()) {
+      has_igc_tas = true;
+    }
+    if (fs_igc->oat.has_value()) {
+      has_igc_oat = true;
+    }
+    if (fs_igc->vat.has_value()) {
+      has_igc_vat = true;
+    }
+    if (fs_igc->gsp.has_value()) {
+      has_igc_gsp = true;
+    }
+    if (fs_igc->fxa.has_value()) {
+      has_igc_fxa = true;
+    }
+    if (fs_igc->gfo.has_value()) {
+      has_igc_gfo = true;
+    }
+    if (fs_igc->acz.has_value()) {
+      has_igc_acz = true;
+    }
+    if constexpr(kIncludeIGCSIU) {
+      if (fs_igc->siu.has_value()) {
+        has_igc_siu = true;
+      }
+    }
+    if constexpr(kIncludeIGCTRT) {
+      if (fs_igc->trt.has_value()) {
+        has_igc_trt = true;
+      }
+    }
+  }
+  //return fs_igc;
 }

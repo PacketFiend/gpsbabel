@@ -37,7 +37,6 @@
 #include "units.h"                      // for UnitsFormatter
 #include "xmlgeneric.h"                 // for cb_cdata, cb_end, cb_start, xg_callback, xg_string, xg_cb_type, xml_deinit, xml_ignore_tags, xml_init, xml_read, xg_tag_mapping
 
-
 class KmlFormat : public Format
 {
 public:
@@ -206,8 +205,9 @@ private:
   void kml_route_tlr(const route_head* header);
   void kml_write_AbstractView();
   void kml_mt_array_schema(const char* field_name, const char* display_name, const char* type) const;
+  void kml_mt_find_igc_usage(const route_head* rte);
   static QString kml_get_posn_icon(int freshness);
-
+  
   /* Data Members */
 
   // options
