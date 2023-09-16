@@ -596,6 +596,7 @@ public:
   gb_color line_color;         /* Optional line color for rendering */
   int line_width;         /* in pixels (sigh).  < 0 is unknown. */
   const session_t* session;	/* pointer to a session struct */
+  QString rte_altmode = nullptr;
 
 public:
   route_head();
@@ -617,6 +618,7 @@ using route_trl = void (*)(const route_head*);
 class RouteList : private QList<route_head*>
 {
 public:
+  QString name = QStringLiteral("FOOBAR");
   int waypt_count() const;
   void add_head(route_head* rte); // a.k.a. append(), push_back()
   // FIXME: Generally it is inefficient to use an element pointer or reference to define the element to be deleted, use iterator instead,

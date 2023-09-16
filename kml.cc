@@ -950,6 +950,9 @@ void KmlFormat::kml_output_tailer(const route_head* header)
           writer->writeEndElement(); // Close LineString tag
         }
         writer->writeStartElement(QStringLiteral("LineString"));
+        if (header->rte_altmode == QStringLiteral("clamped")) {
+          floating = false;
+        }
         kml_output_positioning(true);
         writer->writeStartElement(QStringLiteral("coordinates"));
         writer->writeCharacters(QStringLiteral("\n"));

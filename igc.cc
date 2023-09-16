@@ -165,8 +165,10 @@ void IgcFormat::TaskRecordReader::igc_task_rec(const char* rec)
 
     // Create a route to store the task data in.
     rte_head = new route_head;
-    rte_head->rte_name = task_num;
+    //rte_head->rte_name = task_num;
+    rte_head->rte_name = QStringLiteral("Task Declaration");
     rte_head->rte_desc = QStringLiteral(DATEMAGIC) + flight_date + QStringLiteral(": ") + task_desc;
+    rte_head->rte_altmode = QStringLiteral("clamped");
     route_add_head(rte_head);
     state = state_t::takeoff;
     return;

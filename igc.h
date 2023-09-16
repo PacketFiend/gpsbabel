@@ -231,8 +231,10 @@ private:
 
   static constexpr int kMaxRecLen = 79;		// Includes null terminator and CR/LF
   static constexpr int kMaxDescLen = 1024;
-  static constexpr char kPresTrkName[] = "PRESALTTRK";
-  static constexpr char kGNSSTrkName[] = "GNSSALTTRK";
+  //static constexpr char kPresTrkName[] = "PRESALTTRK";
+  //static constexpr char kGNSSTrkName[] = "GNSSALTTRK";
+  static constexpr char kPresTrkName[] = "Pressure Altimiter";
+  static constexpr char kGNSSTrkName[] = "GPS Altimiter";
 
   /* Member Functions */
 
